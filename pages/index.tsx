@@ -3,8 +3,14 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Menu } from '../components'
+import styled from 'styled-components'
+import { Menu, Characters } from '../components'
+import { Header } from '../components/Header'
 import styles from '../styles/Home.module.css'
+
+const Content = styled.div`
+  display: flex;
+`
 
 const EXCHANGE_RATES = gql`
   query {
@@ -19,6 +25,8 @@ const EXCHANGE_RATES = gql`
         species
         type
         gender
+        image
+        created
         origin {
           id
           name
@@ -33,14 +41,12 @@ const EXCHANGE_RATES = gql`
           dimension
           created
         }
-        image
         episode {
           id
           name
           air_date
           created
         }
-        created
       }
     }
     episodesByIds(ids: [1, 2]) {
@@ -63,14 +69,11 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Menu />
-
-      {data.characters.results.map((character) => (
-        <>
-          <Image alt={character.name} src={character.image} width="40" height="40" />
-          <p>{character.name}</p>
-        </>
-      ))}
+      <Header>Rick and Morty API</Header>
+      <Content>
+        <Menu />
+        <Characters characters={data.characters.results} />
+      </Content>
     </>
   )
 }

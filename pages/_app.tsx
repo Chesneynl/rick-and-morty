@@ -4,12 +4,12 @@ import { ApolloProvider } from '@apollo/client'
 import { Menu } from '../components'
 import styled, { ThemeProvider } from 'styled-components'
 import { theme } from '../lib/theme'
+import '../lib/styles.css'
 
 const PageWidth = styled.div`
   margin: 0 auto;
   max-width: 1200px;
   padding: 0 4px;
-  display: flex;
   color: ${(p) => p.theme.colors.primary};
 `
 
