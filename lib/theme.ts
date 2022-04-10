@@ -1,6 +1,12 @@
 export const theme = {
   borderRadius: '16px;',
 
+  fontSizes: {
+    small: '12px',
+    medium: '14px',
+    large: '18px',
+  },
+
   colors: {
     primary: '#1e3064',
     black: '#000',
