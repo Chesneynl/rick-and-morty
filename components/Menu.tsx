@@ -4,10 +4,14 @@ import uniq from 'lodash/uniq'
 
 import type { Character, Episode, Location } from '../lib/types'
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 
 const MenuContainer = styled.div`
-  width: 300px;
+  width: 400px;
   margin-right: ${(p) => p.theme.gutters.base};
+  position: sticky;
+  top: 0;
+  align-self: start;
 `
 
 const Category = styled.span`
@@ -20,10 +24,10 @@ const Category = styled.span`
   cursor: pointer;
 `
 
-const SubItem = styled.div`
+const StyledLink = styled.a`
   display: block;
   cursor: pointer;
-  padding: ${(p) => p.theme.gutters.small};
+  padding: ${(p) => p.theme.gutters.extraSmall} ${(p) => p.theme.gutters.small};
   border-radius: ${(p) => p.theme.borderRadius};
   text-decoration: none;
   color: ${(p) => p.theme.colors.primary};
@@ -38,7 +42,8 @@ const SubItem = styled.div`
 
 const SubMenuItems = styled.div`
   display: block;
-  padding: 0 ${(p) => p.theme.gutters.small};
+  padding: 0 ${(p) => p.theme.gutters.extraSmall};
+  font-size: 12px;
 `
 
 type Props = {
@@ -50,18 +55,12 @@ type MenuProps = {
   characters: Character[]
   episodes: Episode[]
   locations: Location[]
-  onClick: (category: string, filterVariable: string) => void
 }
 
-export function Menu({ onClick, episodes, locations }: MenuProps) {
+export function Menu({ episodes, locations }: MenuProps) {
   const [openCategory, setOpenCategory] = useState<string | undefined>()
   const dimensions = uniq(locations.map((location) => location.dimension))
   const router = useRouter()
-
-  useEffect(() => {
-    // Always do navigations after the first render
-    router.push('/?counter=10', undefined, { shallow: true })
-  }, [router])
 
   function toggleMenuItem(category: string) {
     if (category === openCategory) return setOpenCategory(undefined)
@@ -75,13 +74,11 @@ export function Menu({ onClick, episodes, locations }: MenuProps) {
       {openCategory === 'dimensions' && (
         <SubMenuItems>
           {dimensions.map((dimension) => (
-            <SubItem
-              key={dimension}
-              className={router.pathname == '/' ? 'active' : ''}
-              onClick={() => onClick('dimensions', dimension)}
-            >
-              {dimension}
-            </SubItem>
+            <Link key={dimension} href={`/dimension/${encodeURIComponent(dimension)}`} passHref>
+              <StyledLink className={router.pathname == '/' ? 'active' : ''}>
+                {dimension}
+              </StyledLink>
+            </Link>
           ))}
         </SubMenuItems>
       )}
@@ -90,13 +87,11 @@ export function Menu({ onClick, episodes, locations }: MenuProps) {
       {openCategory === 'locations' && (
         <SubMenuItems>
           {locations.map((location) => (
-            <SubItem
-              key={location.id}
-              className={router.pathname == '/' ? 'active' : ''}
-              onClick={() => onClick('locations', location.id)}
-            >
-              {location.name}
-            </SubItem>
+            <Link key={location.id} href={`/location/${location.id}`} passHref>
+              <StyledLink className={router.pathname == '/' ? 'active' : ''}>
+                {location.name}
+              </StyledLink>
+            </Link>
           ))}
         </SubMenuItems>
       )}
@@ -105,13 +100,11 @@ export function Menu({ onClick, episodes, locations }: MenuProps) {
       {openCategory === 'episodes' && (
         <SubMenuItems>
           {episodes.map((episode) => (
-            <SubItem
-              key={episode.id}
-              className={router.pathname == '/' ? 'active' : ''}
-              onClick={() => onClick('episodes', episode.id)}
-            >
-              {episode.episode}
-            </SubItem>
+            <Link key={episode.id} href="/about" passHref>
+              <StyledLink className={router.pathname == '/' ? 'active' : ''}>
+                {episode.episode}
+              </StyledLink>
+            </Link>
           ))}
         </SubMenuItems>
       )}

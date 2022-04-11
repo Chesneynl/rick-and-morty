@@ -1,14 +1,12 @@
-import { gql, useQuery } from '@apollo/client'
-import type { NextPage } from 'next'
+import uniq from 'lodash/uniq'
 import Head from 'next/head'
-import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
-import { Header, Menu, Characters } from '../components'
-import apolloClient from '../lib/apollo'
-import { CHARACTER_OBJECT, MENU_QUERY } from '../lib/queries'
-import { EPISODES_QUERY } from '../lib/queries/episodes'
-import { Character, Episode } from '../lib/types'
+import { Header, Menu, Characters } from '../../components'
+import apolloClient from '../../lib/apollo'
+import { MENU_QUERY } from '../../lib/queries'
+import { LOCATION_ROUTES_QUERY, LOCATION_BY_ID_QUERY } from '../../lib/queries'
+import type { Location, Character, Episode, Context } from '../../lib/types'
 
 const PageWidth = styled.div`
   margin: 0 auto;
@@ -21,33 +19,45 @@ const Content = styled.div`
   display: flex;
 `
 
-const QUERY = gql`
-  ${CHARACTER_OBJECT}
-
-  query {
-    characters {
-      results {
-        ...characterObject
-      }
+export async function getStaticPaths() {
+  const { data } = await apolloClient.query({
+    query: LOCATION_ROUTES_QUERY,
+  })
+  const locationIds = data.locations.results.map((location: Location) => location.id)
+  const paths = locationIds.map((locationId: string) => {
+    return {
+      params: {
+        id: locationId,
+      },
     }
-  }
-`
+  })
 
-export async function getStaticProps() {
+  return {
+    paths,
+    fallback: false,
+  }
+}
+
+export async function getStaticProps({ params }: Context) {
+  const { id: locationId } = params
+
   const { data: MenuData } = await apolloClient.query({
     query: MENU_QUERY,
   })
+
+  console.log({ locationId })
   const { data } = await apolloClient.query({
-    query: QUERY,
+    query: LOCATION_BY_ID_QUERY,
+    variables: { id: locationId },
   })
 
   const { episodes, locations } = MenuData
-  const { characters } = data
+  const { residents } = data.location
 
   return {
     props: {
       episodes: episodes.results,
-      characters: characters.results,
+      characters: residents,
       locations: locations.results,
     },
   }
@@ -59,7 +69,7 @@ type Props = {
   locations: Location[]
 }
 
-function Home(props: Props) {
+function CharactersByLocation(props: Props) {
   const { episodes, locations, characters } = props
 
   return (
@@ -71,7 +81,7 @@ function Home(props: Props) {
       </Head>
 
       <PageWidth>
-        <Header>Rick and Morty API</Header>
+        <Header>Rick and Morty API - Dimension</Header>
         <Content>
           <Menu episodes={episodes} locations={locations} characters={characters} />
           <Characters characters={characters} />
@@ -81,4 +91,4 @@ function Home(props: Props) {
   )
 }
 
-export default Home
+export default CharactersByLocation

@@ -93,6 +93,8 @@ function CharacterListItem({ character }: CharacterLitItemProps) {
 }
 
 export function Characters({ characters }: CharactersProps) {
+  if (!characters.length) return <Container>No characters found....</Container>
+
   return (
     <Container>
       {characters.map((character) => (

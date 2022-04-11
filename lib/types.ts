@@ -23,3 +23,10 @@ export type Location = {
   residents: Character[]
   name: string
 }
+
+export type Context = {
+  params: {
+    id: string
+    slug: string
+  }
+}
