@@ -13,7 +13,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true
+    "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      "lib-ui": ["libs/lib-ui"],
+      "lib-graph": ["libs/lib-graph"],
+      "lib-types": ["libs/lib-types"]
+    }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]

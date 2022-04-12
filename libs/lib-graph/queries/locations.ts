@@ -6,7 +6,6 @@ export const LOCATION_ROUTES_QUERY = gql`
     locations {
       results {
         id
-        name
         dimension
       }
     }

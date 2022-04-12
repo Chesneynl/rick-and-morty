@@ -2,7 +2,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 import styled from 'styled-components'
 
-import type { Character } from '../lib/types'
+import type { Character } from '../../lib-types/types'
 
 const Container = styled.div`
   display: block;

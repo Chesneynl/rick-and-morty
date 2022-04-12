@@ -1,15 +1,20 @@
 import type { AppProps } from 'next/app'
-import apolloClient from '../lib/apollo'
-import { ApolloProvider } from '@apollo/client'
 import { ThemeProvider } from 'styled-components'
-import { theme } from '../lib/theme'
-import '../lib/styles.css'
+import { ApolloProvider } from '@apollo/client'
+
+import { theme, Layout } from 'lib-ui'
+import { apolloClient } from 'lib-graph'
+import '../libs/lib-ui/styles.css'
 
 function App({ Component, pageProps }: AppProps) {
+  const { episodes, locations, characters } = pageProps
+
   return (
     <ApolloProvider client={apolloClient}>
       <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
+        <Layout episodes={episodes} locations={locations} characters={characters}>
+          <Component {...pageProps} />
+        </Layout>
       </ThemeProvider>
     </ApolloProvider>
   )
