@@ -100,9 +100,9 @@ export function Menu({ episodes, locations }: MenuProps) {
       {openCategory === 'episodes' && (
         <SubMenuItems>
           {episodes.map((episode) => (
-            <Link key={episode.id} href="/about" passHref>
+            <Link key={episode.id} href={`/episode/${episode.id}`} passHref>
               <StyledLink className={router.pathname == '/' ? 'active' : ''}>
-                {episode.episode}
+                {episode.episode} {episode.name}
               </StyledLink>
             </Link>
           ))}

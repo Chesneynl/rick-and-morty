@@ -6,6 +6,7 @@ export const MENU_QUERY = gql`
       results {
         id
         episode
+        name
       }
     }
     locations {
