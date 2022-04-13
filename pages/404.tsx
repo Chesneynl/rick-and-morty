@@ -1,13 +1,7 @@
-export async function getStaticProps() {
-  return {
-    props: {
-      episodes: [],
-      characters: [],
-      locations: [],
-    },
-  }
-}
+import { Header } from 'lib-ui'
 
 export default function Custom404() {
-  return <h1>404 - Page Not Found</h1>
+  return <Header>404 - Page Not Found</Header>
 }
+
+Custom404.displayName = 'Custom404'

@@ -9,6 +9,14 @@ import '../libs/lib-ui/styles.css'
 function App({ Component, pageProps }: AppProps) {
   const { episodes, locations, characters } = pageProps
 
+  if (['Custom404', 'Custom500'].includes(Component.displayName ?? '')) {
+    return (
+      <ThemeProvider theme={theme}>
+        <Component {...pageProps} />
+      </ThemeProvider>
+    )
+  }
+
   return (
     <ApolloProvider client={apolloClient}>
       <ThemeProvider theme={theme}>
