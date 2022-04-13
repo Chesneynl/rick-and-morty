@@ -27,7 +27,7 @@ export async function getStaticProps() {
   if (!data || !MenuData) {
     return {
       redirect: {
-        destination: '/500',
+        notFound: true,
       },
     }
   }
