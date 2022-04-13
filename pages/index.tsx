@@ -24,6 +24,14 @@ export async function getStaticProps() {
     query: QUERY,
   })
 
+  if (!data || !MenuData) {
+    return {
+      redirect: {
+        destination: '/500',
+      },
+    }
+  }
+
   const { episodes, locations } = MenuData
   const { characters } = data
 

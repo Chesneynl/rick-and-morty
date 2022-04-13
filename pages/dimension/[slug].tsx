@@ -24,6 +24,7 @@ export async function getStaticPaths() {
       },
     }
   })
+
   return {
     paths,
     fallback: false,
@@ -41,6 +42,14 @@ export async function getStaticProps({ params }: Context) {
     query: LOCATIONS_BY_DIMENSION_QUERY,
     variables: { dimensionName: decodeURIComponent(slug) },
   })
+
+  if (!data || !MenuData) {
+    return {
+      redirect: {
+        destination: '/500',
+      },
+    }
+  }
 
   const residents = data.locations.results.reduce(
     (acc: Character[], location: Location) => [...acc, ...location.residents],

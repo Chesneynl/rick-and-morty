@@ -35,6 +35,14 @@ export async function getStaticProps({ params }: Context) {
     variables: { id: episodeId },
   })
 
+  if (!data || !MenuData) {
+    return {
+      redirect: {
+        destination: '/500',
+      },
+    }
+  }
+
   const { episodes, locations } = MenuData
   const { characters } = data.episode
 
